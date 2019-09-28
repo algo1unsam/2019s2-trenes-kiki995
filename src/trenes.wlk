@@ -1,88 +1,84 @@
-object trenes {
+import objects.*
 
-	const formacion = []
+class Formacion {
 
-	method tren() {
-		return formacion
+	var vagones = []
+	var property locomotoras = []
+
+	method agregarVagon(vagon) {
+		vagones.add(vagon)
 	}
 
-	method cargarVagon(vagon) {
-		formacion.add(vagon)
+	method sacarVagon(vagon) {
+		vagones.remove(vagon)
 	}
 
-	method pesoliviano() {
-		return formacion.map({ tren => tren.pesoMaximo() }).sum() < 2500
+	method agregarLocomotora(locomotora) {
+		locomotoras.add(locomotora)
 	}
 
-	method velocidadMinima() {
-		return formacion.min({ locomotoras => locomotoras.velocidadMaxima() })
+	method sacarLocomotora(locomotora) {
+		locomotoras.remove(locomotora)
 	}
 
-	method esEficiente() {
-		return formacion.all({ locomotoras => locomotoras.pesoMaximo() }) >= (locomotoras.pesoMaximo() * 5)
+	// Punto 1 
+	method cuantosLivianos() {
+		return vagones.count{ vagon => vagon.peso() < 2500 }
 	}
 
+	// Punto 2
+	method velocidadMaxima() {
+		return locomotoras.min{ locomotora => locomotora.velocidad() }.velocidad()
+	}
+
+	// Punto 3
+	method eficiente() {
+		return locomotoras.all{ locomotora => locomotora.buenArrastre() }
+	}
+
+	// Punto 4
 	method puedeMoverse() {
-		return ( (self.arrastreUtilTotalDeSusLocomotoras()) >= (self.pesoMaximototalDeLosVagones()))
+		return self.arrastreUtilTotal() > self.pesoTotalVagones()
 	}
 
-	method pesoMaximototalDeLosVagones() {
-		return formacion.sum({ vagones => vagones.pesoMaximo() })
+	method arrastreUtilTotal() {
+		return locomotoras.sum{ locomotora => locomotora.arrastreUtil() }
 	}
 
-	method arrastreUtilTotalDeSusLocomotoras() {
-		return formacion.sum({ locomotoras => locomotoras.arrastreUtil() })
+	method pesoTotalVagones() {
+		return vagones.sum{ vagon => vagon.peso() }
 	}
 
-}
-
-class Locomotoras {
-
-	var property peso
-	var property pesoMaximo
-	var property velocidadMaxima
-
-	method arrastreUtil() {
-		return (pesoMaximo - peso)
+	// Punto 5
+	method arrastreFaltante() {
+		return (self.pesoTotalVagones() - self.arrastreUtilTotal()).max(0)
 	}
 
-
-}
-
-class VagonesDePasajeros {
-
-	var property largo
-	var property ancho
-
-	method puedeTransportar() {
-		if (self.ancho() < 2.5) {
-			return (self.largo() * 8)
-		} else {
-			return (self.largo() * 10)
-		}
+	// Para el Punto 6
+	method vagonMasPesado() {
+		return vagones.max{ vagon => vagon.peso() }
 	}
 
-	method pesoMaximo() {
-		return (self.puedeTransportar() * 80)
+	// Para el Punto 7
+	method compleja() {
+		return self.cantidadUnidades() > 20 or self.pesoTotal() > 10000
 	}
 
-}
+	method cantidadUnidades() {
+		return self.unidades().size()
+	}
 
-class VagonesDeCarga {
+	method pesoTotal() {
+		return self.unidades().sum{ u => u.peso() }
+	}
 
-	var property cargaMaxima
-	var property ancho
+	method unidades() = locomotoras + vagones
 
-	method pesoMaximo() {
-		return (self.cargaMaxima() + 160)
+	// Para el Punto 8
+	method completaArrastre(locomotora) {
+		return locomotora.arrastreUtil() >= self.arrastreFaltante()
 	}
 
 }
 
-class Deposito {
-
-	var property formaciones
-	var property locomotoras
-
 }
-
