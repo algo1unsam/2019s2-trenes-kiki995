@@ -65,14 +65,14 @@ class Formacion {
 	}
 
 	method cantidadUnidades() {
-		return self.unidades().size()
+		return self.unidades().size() 
 	}
 
 	method pesoTotal() {
 		return self.unidades().sum{ u => u.peso() }
 	}
 
-	method unidades() = locomotoras + vagones
+	method unidades() = locomotoras + vagones // TODO o directamente locomotoras.size() + vagones.size() no se si tiene sentido armar una lista nueva
 
 	// Para el Punto 8
 	method completaArrastre(locomotora) {
@@ -81,4 +81,3 @@ class Formacion {
 
 }
 
-}
