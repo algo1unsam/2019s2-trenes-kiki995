@@ -17,7 +17,7 @@ class Deposito {
 
 	// Punto 6
 	method vagonesMasPesados() {
-		return formaciones.map{ formacion => formacion.vagonMasPesado()} //TODO  bien, además tiene que devolver el conjunto de lo vagones mas pesados no una lista
+		return formaciones.map{ formacion => formacion.vagonMasPesado()}.asSet() //TODO  bien, además tiene que devolver el conjunto de lo vagones mas pesados no una lista
 	}
 	// Punto 7
 	method necesitaConductorExperimentado() {
